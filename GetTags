@@ -1,0 +1,19 @@
+import bs4
+import requests
+import pandas
+
+r = requests.get('https://codewithharry.com')
+
+htmlcontent = r.content
+
+soup = bs4.BeautifulSoup(htmlcontent,'html.parser')
+
+paras = soup.find_all('p')
+div_tag = soup.find_all('div')
+
+raw_data = {'p_tags': paras,'d_tags': div_tag}
+
+df = pandas.DataFrame(raw_data, columns = ['p_tags','d_tags'])
+
+df.to_csv('/Users/shankardas/Desktop/Learning Python/tags.csv')
+

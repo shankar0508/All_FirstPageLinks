@@ -1,0 +1,25 @@
+import bs4
+import requests
+import pandas
+
+r = requests.get('https://codewithharry.com')
+
+htmlcontent = r.content
+
+soup = bs4.BeautifulSoup(htmlcontent,'html.parser')
+
+anchors = soup.find_all('a')
+all_links = []
+final_links = []
+for link in anchors:
+    if(link.get('href') != '#'):
+        links = 'https://codewithharry.com'+link.get('href')
+        all_links.append(links)
+for i in all_links:
+    if i not in final_links:
+        final_links.append(i)
+
+raw_data = {'link_address': final_links}
+
+df = pandas.DataFrame(raw_data, columns = ['link_address'])
+df.to_csv('/Users/shankardas/Desktop/Learning Python/parent_Links.csv')
